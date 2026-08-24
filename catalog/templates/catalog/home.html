@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интернет-магазин — Главная</title>
+    <!-- Bootstrap 5 от CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex: 1;
+        }
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+            border-radius: 0 0 50px 50px;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== ХЕДЕР ===== -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="/">🛒 MyShop</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/contacts">Контакты</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== ОСНОВНОЙ КОНТЕНТ ===== -->
+    <main>
+        <!-- Hero-блок -->
+        <section class="hero">
+            <div class="container text-center">
+                <h1 class="display-3 fw-bold">Добро пожаловать в наш магазин!</h1>
+                <p class="lead fs-4 mt-3">Лучшие товары по лучшим ценам</p>
+                <a href="/contacts" class="btn btn-light btn-lg mt-3">Связаться с нами</a>
+            </div>
+        </section>
+
+        <!-- Категории товаров -->
+        <section class="container my-5">
+            <h2 class="text-center mb-4">Популярные категории</h2>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <div class="card card-hover shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">📱 Электроника</h5>
+                            <p class="card-text text-muted">Смартфоны, ноутбуки, аксессуары</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card card-hover shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">👗 Одежда</h5>
+                            <p class="card-text text-muted">Мужская, женская, детская</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card card-hover shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">📚 Книги</h5>
+                            <p class="card-text text-muted">Художественная и учебная литература</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card card-hover shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">🎮 Игры</h5>
+                            <p class="card-text text-muted">Игры для всех платформ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== ФУТЕР ===== -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">© 2026 MyShop. Все права защищены.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="/" class="text-white text-decoration-none me-3">Главная</a>
+                    <a href="/contacts" class="text-white text-decoration-none">Контакты</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
