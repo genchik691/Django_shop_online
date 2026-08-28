@@ -1,9 +1,14 @@
+# shop/urls.py
 from django.contrib import admin
-from django.urls import path, include  # ✅ Добавляем include
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # ✅ Подключаем URL-файл приложения catalog
-    path('', include('catalog.urls')),  # Все URL заканчиваются на '/'
+    path('', include('catalog.urls')),
 ]
 
+# ✅ Настройка для отображения медиафайлов в режиме разработки
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,42 @@
+[
+{
+  "model": "catalog.category",
+  "pk": 1,
+  "fields": {
+    "name": "Электроника",
+    "description": "Смартфоны, ноутбуки, аксессуары",
+    "created_at": "2026-08-28T15:31:45.611Z",
+    "updated_at": "2026-08-28T15:31:45.611Z"
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 2,
+  "fields": {
+    "name": "Одежда",
+    "description": "Мужская, женская, детская одежда",
+    "created_at": "2026-08-28T15:31:45.614Z",
+    "updated_at": "2026-08-28T15:31:45.614Z"
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 3,
+  "fields": {
+    "name": "Книги",
+    "description": "Художественная и учебная литература",
+    "created_at": "2026-08-28T15:31:45.614Z",
+    "updated_at": "2026-08-28T15:31:45.614Z"
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 4,
+  "fields": {
+    "name": "Игры",
+    "description": "Видеоигры и настольные игры",
+    "created_at": "2026-08-28T15:31:45.615Z",
+    "updated_at": "2026-08-28T15:31:45.615Z"
+  }
+}
+]

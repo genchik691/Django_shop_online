@@ -1,0 +1,41 @@
+[
+{
+  "model": "catalog.product",
+  "pk": 1,
+  "fields": {
+    "name": "iPhone 15 Pro",
+    "description": "Флагманский смартфон Apple",
+    "image": "",
+    "category": 1,
+    "price": "899.99",
+    "created_at": "2026-08-28T15:31:45.618Z",
+    "updated_at": "2026-08-28T15:31:45.631Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 2,
+  "fields": {
+    "name": "MacBook Air M2",
+    "description": "Легкий и мощный ноутбук",
+    "image": "",
+    "category": 1,
+    "price": "1199.99",
+    "created_at": "2026-08-28T15:31:45.624Z",
+    "updated_at": "2026-08-28T15:31:45.624Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 4,
+  "fields": {
+    "name": "Война и мир",
+    "description": "Роман Льва Толстого",
+    "image": "",
+    "category": 3,
+    "price": "15.99",
+    "created_at": "2026-08-28T15:31:45.627Z",
+    "updated_at": "2026-08-28T15:31:45.627Z"
+  }
+}
+]
