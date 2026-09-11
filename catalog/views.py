@@ -1,50 +1,75 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.contrib import messages
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
+from .models import Product
 
 
+# ===== Контроллер для главной страницы =====
 def home(request):
     """
     Контроллер главной страницы.
-    Рендерит шаблон home.html.
+    Получает все товары и передаёт их в шаблон.
     """
-    # ✅ Рендеринг с помощью функции render()
-    return render(request, 'catalog/home.html')
+    # ✅ Использован лаконичный запрос: Product.objects.all()
+    products = Product.objects.all()
+
+    context = {
+        'products': products,
+    }
+    return render(request, 'catalog/home.html', context)
 
 
+# ===== Контроллер для страницы контактов =====
 def contacts(request):
     """
     Контроллер страницы контактов.
-    Рендерит шаблон contacts.html.
-    Обрабатывает POST-запросы (форма обратной связи).
     """
-    # ✅ Дополнительное задание: обработка формы
     if request.method == 'POST':
-        # Получаем данные из формы
+        # Обработка формы (дополнительное задание)
         name = request.POST.get('name', '')
         email = request.POST.get('email', '')
-        phone = request.POST.get('phone', '')
-        subject = request.POST.get('subject', '')
         message = request.POST.get('message', '')
+        print(f"📨 Сообщение от {name} ({email}): {message}")
 
-        # Здесь можно сохранить данные в БД или отправить по email
-        # Пока просто выводим в консоль (отладка)
-        print(f"📨 Получена заявка от {name} ({email})")
-        print(f"   Тема: {subject}")
-        print(f"   Сообщение: {message[:100]}...")
+        context = {
+            'success_message': 'Спасибо! Ваше сообщение отправлено.',
+        }
+        return render(request, 'catalog/contacts.html', context)
 
-        # ✅ Передаём сообщение об успешной отправке в шаблон
-        success_message = "Спасибо! Ваше сообщение отправлено. Мы свяжемся с вами в ближайшее время."
-
-        # Рендерим шаблон с сообщением об успехе
-        return render(request, 'catalog/contacts.html', {
-            'success_message': success_message,
-        })
-
-    # GET-запрос — просто показываем страницу
     return render(request, 'catalog/contacts.html')
 
 
-from django.shortcuts import render
+# ===== Контроллер для детальной страницы товара =====
+def product_detail(request, pk):
+    """
+    Контроллер страницы товара.
+    ✅ Получает pk, извлекает объект через ORM и передает его в шаблон
+    """
+    # ✅ Извлекаем объект через ORM (get_object_or_404)
+    product = get_object_or_404(Product, pk=pk)
 
-# Create your views here.
+    context = {
+        'product': product,
+    }
+    return render(request, 'catalog/product_detail.html', context)
+
+
+# ===== Контроллер для добавления товара (Дополнительное задание) =====
+class AddProductView(CreateView):
+    """
+    Контроллер для добавления нового товара.
+    """
+    model = Product
+    fields = ['name', 'description', 'image', 'category', 'price']
+    template_name = 'catalog/add_product.html'
+    success_url = reverse_lazy('catalog:home')
+
+    def form_valid(self, form):
+        """
+        ✅ Валидная форма, поля обязательны
+        ✅ Сохранение в БД
+        """
+        print(f"✅ Добавлен новый товар: {form.instance.name}")
+        return super().form_valid(form)
+
+
