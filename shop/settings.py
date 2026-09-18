@@ -23,8 +23,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'catalog',  # Ваше приложение
+    'django.contrib.staticfiles', # ✅ Добавьте приложение catalog
+    'catalog', # ✅ Добавьте приложение catalog
+    'blog', # ✅ Добавьте приложение blog
 ]
 
 MIDDLEWARE = [
@@ -42,7 +43,7 @@ ROOT_URLCONF = 'shop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -92,7 +93,7 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # ✅ Настройка медиафайлов
 MEDIA_URL = '/media/'
@@ -100,3 +101,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ✅ Настройки email (для отправки поздравлений)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # для разработки
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'    # для продакшна
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'noreply@myshop.ru')

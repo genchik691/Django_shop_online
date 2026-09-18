@@ -4,15 +4,8 @@ from . import views
 app_name = 'catalog'
 
 urlpatterns = [
-    # Главная страница
-    path('', views.home, name='home'),
-
-    # Страница контактов
-    path('contacts/', views.contacts, name='contacts'),
-
-    # ✅ Детальная страница товара (URL вида /products/int:pk/)
-    path('products/<int:pk>/', views.product_detail, name='product_detail'),
-
-    # ✅ Добавление товара (Дополнительное задание)
+    path('', views.ProductListView.as_view(), name='home'),
+    path('contacts/', views.ContactsView.as_view(), name='contacts'),
+    path('products/<int:pk>/', views.ProductDetailView.as_view(), name='product_detail'),
     path('add-product/', views.AddProductView.as_view(), name='add_product'),
 ]
