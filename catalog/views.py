@@ -1,39 +1,29 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (
-    ListView, DetailView, CreateView, TemplateView
+    ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 )
 from .models import Product
+from .forms import ProductForm
 
 
-# ✅ Главная страница — ListView
 class ProductListView(ListView):
-    """Главная страница: список товаров."""
     model = Product
     template_name = 'catalog/home.html'
     context_object_name = 'products'
-    queryset = Product.objects.all()  # ✅ лаконичный запрос
+    queryset = Product.objects.all()
 
 
-# ✅ Детальная страница товара — DetailView
 class ProductDetailView(DetailView):
-    """Страница товара."""
     model = Product
     template_name = 'catalog/product_detail.html'
     context_object_name = 'product'
 
 
-# ✅ Страница контактов — TemplateView
 class ContactsView(TemplateView):
-    """Страница контактов с обработкой POST."""
     template_name = 'catalog/contacts.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
     def post(self, request, *args, **kwargs):
-        # Обработка формы обратной связи
         name = request.POST.get('name', '')
         email = request.POST.get('email', '')
         message = request.POST.get('message', '')
@@ -44,15 +34,28 @@ class ContactsView(TemplateView):
         return render(request, self.template_name, context)
 
 
-# ✅ Добавление товара — CreateView (доп. задание)
+# ✅ Создание продукта через форму
 class AddProductView(CreateView):
     model = Product
-    fields = ['name', 'description', 'image', 'category', 'price']
-    template_name = 'catalog/add_product.html'
+    form_class = ProductForm  # ✅ используем кастомную форму
+    template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('catalog:home')
 
-    def form_valid(self, form):
-        print(f"✅ Добавлен новый товар: {form.instance.name}")
-        return super().form_valid(form)
+
+# ✅ Редактирование продукта через форму
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm  # ✅ используем кастомную форму
+    template_name = 'catalog/product_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('catalog:product_detail', kwargs={'pk': self.object.pk})
+
+
+# ✅ Удаление продукта
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'catalog/product_confirm_delete.html'
+    success_url = reverse_lazy('catalog:home')
 
 
