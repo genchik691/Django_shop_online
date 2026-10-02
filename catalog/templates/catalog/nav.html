@@ -1,3 +1,4 @@
+<!-- templates/catalog/nav.html -->
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
@@ -7,6 +8,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <!-- Основные ссылки -->
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'catalog:home' %}">Главная</a>
                     </li>
@@ -16,13 +18,33 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'catalog:contacts' %}">Контакты</a>
                     </li>
+
+                    <!-- ✅ Для авторизованных пользователей -->
                     {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'catalog:add_product' %}">Добавить товар</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'blog:create' %}">Добавить статью</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'catalog:add_product' %}">➕ Добавить товар</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'blog:create' %}">➕ Добавить статью</a>
+                        </li>
+                        <li class="nav-item">
+                            <span class="nav-link">👤 {{ user.email }}</span>
+                        </li>
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'users:logout' %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link nav-link">Выйти</button>
+                            </form>
+                        </li>
+
+                    <!-- ✅ Для анонимных пользователей -->
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'users:login' %}">Войти</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'users:register' %}">Регистрация</a>
+                        </li>
                     {% endif %}
                 </ul>
             </div>
