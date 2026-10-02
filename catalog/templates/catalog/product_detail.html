@@ -47,12 +47,21 @@
                 <p>🔄 Обновлён: {{ product.updated_at|date:"d.m.Y H:i" }}</p>
             </div>
 
-            <!-- Кнопки -->
-            <div class="mt-4">
+            <!-- ✅ Кнопки -->
+            <div class="mt-4 d-flex flex-wrap gap-2">
                 <a href="{% url 'catalog:home' %}" class="btn btn-outline-secondary">
                     ← Назад к списку
                 </a>
                 <button class="btn btn-success">Добавить в корзину</button>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-warning">
+                        ✏️ Редактировать
+                    </a>
+                    <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">
+                        🗑 Удалить
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>

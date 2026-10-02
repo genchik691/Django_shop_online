@@ -1,10 +1,9 @@
 # catalog/models.py
 from django.db import models
-from django.utils import timezone
 
 
 class Category(models.Model):
-    """Модель категории товаров"""
+    """Модель категории товаров."""
     name = models.CharField(
         max_length=100,
         verbose_name='Наименование'
@@ -33,7 +32,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    """Модель товара"""
+    """Модель товара."""
     name = models.CharField(
         max_length=200,
         verbose_name='Наименование'
@@ -59,6 +58,10 @@ class Product(models.Model):
         max_digits=10,
         decimal_places=2,
         verbose_name='Цена за покупку'
+    )
+    is_published = models.BooleanField(
+        default=True,
+        verbose_name='Признак публикации'
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
