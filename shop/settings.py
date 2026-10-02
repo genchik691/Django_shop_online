@@ -23,9 +23,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles', # ✅ Добавьте приложение catalog
-    'catalog', # ✅ Добавьте приложение catalog
-    'blog', # ✅ Добавьте приложение blog
+    'django.contrib.staticfiles',
+    'catalog',
+    'blog',
+    'users',  # ✅ Регистрируем приложение
 ]
 
 MIDDLEWARE = [
@@ -112,3 +113,20 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'noreply@myshop.ru')
+
+# ✅ Указываем кастомную модель пользователя
+AUTH_USER_MODEL = 'users.User'
+
+# ✅ Настройки для email (для приветственного письма)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # для разработки
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'    # для продакшна
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'noreply@myshop.ru')
+
+# ✅ Настройки для медиа (аватар)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
