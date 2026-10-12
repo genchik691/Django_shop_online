@@ -5,6 +5,7 @@ from django.views.generic import (
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import BlogPost
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
 # ✅ Список статей — только опубликованные
@@ -75,3 +76,30 @@ class BlogPostDeleteView(DeleteView):
     model = BlogPost
     template_name = 'blog/blogpost_confirm_delete.html'
     success_url = reverse_lazy('blog:list')
+
+class BlogPostCreateView(PermissionRequiredMixin, CreateView):
+    model = BlogPost
+    fields = ['title', 'content', 'preview', 'is_published']
+    template_name = 'blog/blogpost_form.html'
+    success_url = reverse_lazy('blog:list')
+    permission_required = 'blog.add_blogpost'
+    login_url = reverse_lazy('users:login')
+
+
+class BlogPostUpdateView(PermissionRequiredMixin, UpdateView):
+    model = BlogPost
+    fields = ['title', 'content', 'preview', 'is_published']
+    template_name = 'blog/blogpost_form.html'
+    permission_required = 'blog.change_blogpost'
+    login_url = reverse_lazy('users:login')
+
+    def get_success_url(self):
+        return reverse('blog:detail', kwargs={'pk': self.object.pk})
+
+
+class BlogPostDeleteView(PermissionRequiredMixin, DeleteView):
+    model = BlogPost
+    template_name = 'blog/blogpost_confirm_delete.html'
+    success_url = reverse_lazy('blog:list')
+    permission_required = 'blog.delete_blogpost'
+    login_url = reverse_lazy('users:login')
