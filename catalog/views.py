@@ -9,16 +9,16 @@ from django.views.generic import (
 )
 from .models import Product
 from .forms import ProductForm
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from .services import get_products_by_category
 
 class ProductListView(ListView):
-    """Главная страница — только опубликованные товары."""
-    model = Product
     template_name = 'catalog/home.html'
     context_object_name = 'products'
 
     def get_queryset(self):
-        return Product.objects.filter(is_published=True)
+        return get_all_published_products()
 
 
 class ProductDetailView(DetailView):
@@ -94,3 +94,26 @@ def product_unpublish(request, pk):
     messages.success(request, f'Товар "{product.name}" снят с публикации.')
 
     return redirect('catalog:product_detail', pk=product.pk)
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'catalog/product_detail.html'
+    context_object_name = 'product'
+
+    @method_decorator(cache_page(60 * 15))  # 15 минут
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+class CategoryProductsView(ListView):
+    """Список продуктов в указанной категории."""
+    template_name = 'catalog/category_products.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        category_id = self.kwargs.get('category_id')
+        return get_products_by_category(category_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category_id'] = self.kwargs.get('category_id')
+        return context
