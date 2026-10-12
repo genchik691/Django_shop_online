@@ -130,3 +130,13 @@ DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'noreply@myshop.ru')
 # ✅ Настройки для медиа (аватар)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "TIMEOUT": 300,  # 5 минут по умолчанию
+        "KEY_PREFIX": "django_shop",
+    }
+}
