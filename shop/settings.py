@@ -1,7 +1,7 @@
 # shop/settings.py
 import os
 from pathlib import Path
-from dotenv import load_dotenv  # ✅ Установите python-dotenv
+from dotenv import load_dotenv
 
 # Загружаем переменные окружения
 load_dotenv()
@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalog',
     'blog',
-    'users',  # ✅ Регистрируем приложение
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -73,18 +73,10 @@ DATABASES = {
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # Internationalization
@@ -93,31 +85,20 @@ TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# ===== Статика и медиа =====
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# ✅ Настройка медиафайлов
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ✅ Настройки email (для отправки поздравлений)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # для разработки
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'    # для продакшна
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
-DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'noreply@myshop.ru')
-
-# ✅ Указываем кастомную модель пользователя
+# ✅ Кастомная модель пользователя
 AUTH_USER_MODEL = 'users.User'
 
-# ✅ Настройки для email (для приветственного письма)
+# ===== Email =====
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # для разработки
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'    # для продакшна
 EMAIL_HOST = 'smtp.gmail.com'
@@ -127,16 +108,50 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'noreply@myshop.ru')
 
-# ✅ Настройки для медиа (аватар)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-
+# ===== Redis =====
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
-        "TIMEOUT": 300,  # 5 минут по умолчанию
+        "TIMEOUT": 300,
         "KEY_PREFIX": "django_shop",
     }
+}
+
+# ===== Логирование =====
+LOG_DIR = BASE_DIR / 'logs'
+LOG_DIR.mkdir(exist_ok=True)  # ✅ Автосоздание папки
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": LOG_DIR / "django.log",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": True,
+        },
+        "catalog": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
 }
